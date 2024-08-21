@@ -16,7 +16,7 @@ import React from 'react';
 // try to recover gracefully without losing user data.
 
 function Placeholder() {
-  return <div className="editor-placeholder">Enter some rich text...</div>;
+  return <div className="editor-placeholder">Enter some text...</div>;
 }
 
 export function Editor() {
