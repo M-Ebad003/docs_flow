@@ -15,6 +15,7 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 import UserTypeSelector from './UserTypeSelector';
 import Collaborator from './Collaborator';
+import { updateDocumentsAccess } from '@/lib/actions/room.actions';
 
 
 const ShareModel = ({ roomId, collaborators, creatorId, currentUserType }: ShareDocumentDialogProps) => {
@@ -25,13 +26,18 @@ const ShareModel = ({ roomId, collaborators, creatorId, currentUserType }: Share
     const [email, setEmail] = useState('');
     const [userType, setUserType] = useState<UserType>('viewer')
 
-    const shareDocumentHandler = () => {
+    const shareDocumentHandler = async () => {
+        setLoading(true);
 
+        await updateDocumentsAccess({
+            roomId, email, userType: userType as UserType, updatedBy: user.info
+        });
+        setLoading(false);
     }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
-                <Button className='gradient-blue flex h-9 gap-1 px-4' disabled={currentUserType !== 'editor'}>
+                <Button className='gradient-blue flex h-9 gap-1 px-4' disabled ={currentUserType !== 'editor'}>
                     <Image
                         src="/assets/icons/share.svg"
                         alt='share'
@@ -82,6 +88,7 @@ const ShareModel = ({ roomId, collaborators, creatorId, currentUserType }: Share
                     </ul>
 
                 </div>
+               
             </DialogContent>
         </Dialog>
 
